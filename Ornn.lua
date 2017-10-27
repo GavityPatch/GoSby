@@ -61,28 +61,25 @@ OnTick(function(myHero)
     local Rtarget = target3:GetTarget()
     local pillar = OnObjectLoad:GetNearestPillar(target);
     local wallsAroundTarget = target:ServerPosition.RotateAround(EHitRadius, 90).GetWalls(target);
-    local bestWall = wallsAroundTarget:Where(x => x.Distance(enemy) <= E.Range).OrderBy(x => x.Distance(target)).FirstOrDefault();
-    local wallBetweenUs = WallManager:GetFirstWall(enemy.ServerPosition, target.ServerPosition);
+    local bestWall = wallsAroundTarget:Where(x => x.Distance(Player) <= E.Range).OrderBy(x => x.Distance(target)).FirstOrDefault();
+    local wallBetweenUs = WallManager:GetFirstWall(Player.ServerPosition, target.ServerPosition);
 
     if IOW:Mode() == "Combo" then
 
-    if OrnnMenu.Combo.W:Valune() and target.Distance(enemy) <= W.range and W.IsReady then
+    if OrnnMenu.Combo.W:Valune() and target.Distance(Player) <= W.range and W.IsReady then
     !target.HasBuff("OrnnVulnerableDebuff")
             Cast(W,Wtarget);
         return;
     end
-    if OrnnMenu.Combo.Q:Valune() and target.Distance(enemy) <= Q.range and Q.IsReady then
-    
-            if E.IsReady and Q.IsReady then
-               Cast(Q,Qtarget);
- 
+    if OrnnMenu.Combo.Q:Valune() and target.Distance(Player) <= Q.range and Q.IsReady then
+    if E.IsReady and Q.IsReady then Cast(Q,Qtarget);
         else if Q.IsReady then
             Cast(Q,Qtarget);
         return;
         end
     end
     if OrnnMenu.Combo.E:Valune() and E.IsReady then
-        if pillar.Distance(enemy) <= E.Range)
+        if pillar.Distance(Player) <= E.Range then
             Cast(E,pillar.ServerPosition);
         else
             if bestWall == Vector.Zero

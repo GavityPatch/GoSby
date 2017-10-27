@@ -60,18 +60,18 @@ OnTick(function(myHero)
     local Wtarget = target2:GetTarget()
     local Rtarget = target3:GetTarget()
     local pillar = OnObjectLoad:GetNearestPillar(target);
-    local wallsAroundTarget = target:ServerPosition.RotateAround(SpellManager.EHitRadius, 90).GetWalls(target);
-    local bestWall = wallsAroundTarget:Where(x => x.Distance(enemy) <= SpellManager.E.Range).OrderBy(x => x.Distance(target)).FirstOrDefault();
+    local wallsAroundTarget = target:ServerPosition.RotateAround(EHitRadius, 90).GetWalls(target);
+    local bestWall = wallsAroundTarget:Where(x => x.Distance(enemy) <= E.Range).OrderBy(x => x.Distance(target)).FirstOrDefault();
     local wallBetweenUs = WallManager:GetFirstWall(enemy.ServerPosition, target.ServerPosition);
 
     if IOW:Mode() == "Combo" then
 
-    if OrnnMenu.Combo.W:Valune() && target.Distance(enemy) <= W.range and W.IsReady then
+    if OrnnMenu.Combo.W:Valune() and target.Distance(enemy) <= W.range and W.IsReady then
     !target.HasBuff("OrnnVulnerableDebuff")
             Cast(W,Wtarget);
         return;
     end
-    if OrnnMenu.Combo.Q:Valune() && target.Distance(enemy) <= Q.range and Q.IsReady then
+    if OrnnMenu.Combo.Q:Valune() and target.Distance(enemy) <= Q.range and Q.IsReady then
     
             if E.IsReady and Q.IsReady then
                Cast(Q,Qtarget);

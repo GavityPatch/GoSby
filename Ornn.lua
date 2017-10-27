@@ -49,7 +49,7 @@ end)
 
 
 OnProcessSpell(function(unit, spell)
-    if (unit.IsMelee && spell.SpellSlot == SpellSlot.R && spell.SpellData.Name == "OrnnR")
+    if unit.IsMelee && spell.SpellSlot == SpellSlot.R && spell.SpellData.Name == "OrnnR")
     LastRCast = Game.TickCount;
 end) 
 

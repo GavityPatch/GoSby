@@ -23,13 +23,12 @@ local W  = { delay = .25, speed = 1850      , width = 60 , range = 550 }
 local E  = { delay = .25, speed = math.huge , width = nil, range = 800 }
 local R  = { delay = .25, speed = math.huge , width = nil, range = 2500 }
 
-OnLoad(function(myHero)
+OnObjectLoad(function(Object)
     local Obj_AI_Hero Player => GetObjectName.Player;
-    local Vector3 GetWalls(this List<Vector3> points, Obj_AI_Base target)
+    local Vector3 GetWalls(this List<Vector3> points, Object target)
     return points.Select(x => GetFirstWall(target.ServerPosition, x)).Where(x => x != Vector3.Zero).ToList();
     
    if Vector3 GetFirstWall(Vector3 start, Vector3 end) then
-
         local wallPos = Vector3.Zero;
         local distDividend = (start - end) / 20;
         for (i = 0; i < 20; i++) then
@@ -42,8 +41,8 @@ OnLoad(function(myHero)
         end
         return wallPos;
     end
-    local GameObject GetNearestPillar(Obj_AI_Base target) then
-    return GameObjects.AllyMinions.Where(x => x.Distance(target) <= EHitRadius and x.Name == "OrnnQPillar" && !x.IsDead).OrderBy(x => x.Distance(target)).FirstOrDefault();
+    local Object GetNearestPillar(Obj_AI_Base target) then
+    return Objects.AllyMinions.Where(x => x.Distance(target) <= EHitRadius and x.Name == "OrnnQPillar" && !x.IsDead).OrderBy(x => x.Distance(target)).FirstOrDefault();
     end
 end)
 

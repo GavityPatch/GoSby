@@ -5,7 +5,6 @@ require('Inspired')
 require('DeftLib')
 require('DamageLib')
 
-local ver 2.0
 
 local OrnnMenu = MenuConfig("Ornn", "Ornn")
 OrnnMenu:Menu("Combo", "Combo")

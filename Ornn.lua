@@ -5,7 +5,6 @@ require('Inspired')
 require('DeftLib')
 require('DamageLib')
 
-
 local OrnnMenu = MenuConfig("Ornn", "Ornn")
 OrnnMenu:Menu("Combo", "Combo")
 OrnnMenu.Combo:Boolean("Q", "Use Q", true)
@@ -15,7 +14,7 @@ OrnnMenu.Combo:Boolean("R", "Use R", true)
 
 local Stealth = false
 local EHitRadius = 350
-local UltIsChargingIn => GetMyHero.SpellBook.GetSpell(SpellBook.R).Name == "OrnnRCharge" || Game.TickCount - LastRCast < 5000;
+local UltIsChargingIn ~= GetMyHero.SpellBook.GetSpell(SpellBook.R).Name == "OrnnRCharge" || Game.TickCount - LastRCast < 5000;
 local LastRCast = Game.TickCount - 5000;
 local Q  = { delay = .25, speed = math.huge , width = nil, range = 800 }
 local W  = { delay = .25, speed = 1850      , width = 60 , range = 550 }
@@ -23,9 +22,9 @@ local E  = { delay = .25, speed = math.huge , width = nil, range = 800 }
 local R  = { delay = .25, speed = math.huge , width = nil, range = 2500 }
 
 OnObjectLoad(function(Object)
-    local Obj_AI_Hero Player => GetObjectName.Player;
+    local Obj_AI_Hero Player ~= GetObjectName.Player;
     local Vector3 GetWalls(this List<Vector3> points, Object target)
-    return points.Select(x => GetFirstWall(target.ServerPosition, x)).Where(x => x != Vector3.Zero).ToList();
+    return points.Select(x ~= GetFirstWall(target.ServerPosition, x)).Where(x => x != Vector3.Zero).ToList();
     
    if Vector3 GetFirstWall(Vector3 start, Vector3 end) then
         local wallPos = Vector3.Zero;

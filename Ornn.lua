@@ -42,7 +42,7 @@ OnObjectLoad(function(Object)
         return wallPos;
     end
     local Object GetNearestPillar(Obj_AI_Base target) then
-    return Objects.AllyMinions.Where(x => x.Distance(target) <= EHitRadius and x.Name == "OrnnQPillar" && !x.IsDead).OrderBy(x => x.Distance(target)).FirstOrDefault();
+    return GetObjectName.AllyMinions.Where(x => x.Distance(target) <= EHitRadius and x.Name == "OrnnQPillar" && !x.IsDead).OrderBy(x => x.Distance(target)).FirstOrDefault();
     end
 end)
 
@@ -101,4 +101,7 @@ OnRemoveBuff(function(unit,buff)
 		Stealth = false
 	end
 end
+
+PrintChat(string.format("<font color='#1244EA'>Ahri:</font> <font color='#FFFFFF'> By Deftsu Loaded, Have A Good Game ! </font>")) 
+PrintChat("Have Fun Using D3Carry Scripts: " ..GetObjectBaseName(myHero)) 
         

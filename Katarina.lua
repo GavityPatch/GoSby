@@ -200,8 +200,8 @@ OnTick(function(myHero)
     Misc(target)
 end)
     
-PrintChat(string.format("<font color='#1244EA'>Katarina:</font> <font color='#FFFFFF'> By Deftsu Loaded, Have A Good Game ! </font>")) 
-PrintChat("Have Fun Using D3Carry Scripts: " ..GetObjectBaseName(myHero)) 
+PrintChat(string.format("<font color='#1244EA'>Katarina:</font> <font color='#FFFFFF'> A Good Game ! </font>")) 
+PrintChat("Scripts: " ..GetObjectBaseName(myHero)) 
 
 
 function VectorWay(A,B)

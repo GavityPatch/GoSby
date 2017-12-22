@@ -1,5 +1,6 @@
 if GetObjectName(GetMyHero()) ~= "Riven" then return end
 
+require('MapPositionGOS')
 require('Inspired')
 require('DeftLib')
 require('DamageLib')
@@ -278,5 +279,3 @@ OnRemoveBuff(function(unit,buff)
 end)
 
 AddGapcloseEvent(_W, 260, false, RivenMenu)
-
-PrintChat(string.format("<font color='#1244EA'>Riven:</font> <font color='#FFFFFF'> By GosWalk Loaded, Have A Good Game ! </font>")) 

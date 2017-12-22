@@ -21,10 +21,8 @@ KatarinaMenu:Menu("Killsteal", "Killsteal")
 KatarinaMenu.Killsteal:Boolean("SmartKS", "Smart KS", true)
 KatarinaMenu.Killsteal:Boolean("UseWards", "Use Wards", true)
 
-if Ignite ~= nil then
 KatarinaMenu:Menu("Misc", "Misc")
-KatarinaMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
-end
+if Ignite ~= nil then KatarinaMenu.Misc:Boolean("Autoignite", "Auto Ignite", true) end
 
 KatarinaMenu:Menu("JungleClear", "JungleClear")
 KatarinaMenu.JungleClear:Boolean("Q", "Use Q", true)
@@ -47,6 +45,8 @@ KatarinaMenu.Drawings:Boolean("R", "Draw R Range", false)
 --True
 local GirarR = false
 local Dagger = {}
+local DaggerW = {}
+local Daggerpos = {}
 local ArgsW = 0
 local spellObj
 local kataCounter = 0
@@ -70,16 +70,12 @@ end
 
  local function Kat_UpdateBuff(unit,buff)
         if unit.isMe and buff.Name == "katarinarsound" then 
-            IOW.movementEnabled = true
-            IOW.attacksEnabled = true
             GirarR = true
         end
 end
 
 local function Kat_RemoveBuff(unit,buff)
         if unit.isMe and buff.Name == "katarinarsound" then
-            IOW.movementEnabled = false
-            IOW.attacksEnabled = false
             GirarR = false
      end
 end
@@ -94,6 +90,16 @@ local function Kat_OnCreateObj(Object)
     if GetObjectBaseName(Object) == "HiddenMinion" then
     table.insert(Dagger, Object)
     DelayAction(function() table.remove(Dagger, 1) end, 6900)
+    end
+end
+
+local function Kat_OnDeleteObj(Object)
+    if GetObjectBaseName(Object) == "HiddenMinion" then
+        for i,rip in pairs(Dagger) do
+          if GetNetworkID(Object) == GetNetworkID(rip) then
+          table.remove(Dagger,i) 
+          end
+       end
     end
 end
 
@@ -139,25 +145,12 @@ local function CastW(target)
 end
 
 local function CastE(target)        
-        if Ready(_E) and ValidTarget(target, E.range) then
-            for i,v in pairs(Dagger) do
-                if GetDistance(target,v) < 350 and GetDistance(v) < 1200 then
-                    CastSkillShot(_E,GetOrigin(target) + (VectorWay(GetOrigin(target),GetOrigin(v))):normalized()*math.random(100,150))
-                elseif GetDistance(target,v) < 200 and GetDistance(target) < 800 then
-                    CastSkillShot(_E,GetOrigin(target))
-                end
-            end
-            if GetCurrentHP(target) < CalcDamage(myHero,target,(GetBaseDamage(myHero)+GetBonusDmg(myHero)),15+15*GetCastLevel(myHero,2) + (GetBaseDamage(myHero)+GetBonusDmg(myHero))*0.65 + GetBonusAP(myHero)*0.25) then
-                CastSkillShot(_E,GetOrigin(target))
-            end
+    for _,Adaga in pairs(Dagger) do
+        if GetDistance(Adaga, target) < 250 then
+        CastSkillShot(_E,GetOrigin(target) + (VectorWay(GetOrigin(target),GetOrigin(Adaga))):normalized()*math.random(100,150))
         end
-    end
-
-local function CastR(target)
-    if KatarinaMenu.Combo.R:Value() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
-        CastSpell(_R)
-        end
-    end
+    end	
+end
 
 
        
@@ -198,30 +191,30 @@ local function Kat_Combo(target)
             if KatarinaMenu.Combo.Q:Value() then CastQ(target) end
             if KatarinaMenu.Combo.W:Value() then CastW(target) end
             if KatarinaMenu.Combo.E:Value() then CastE(target) end
-            if KatarinaMenu.Combo.R:Value() then CastR(target) end
         end
     end
 end
 
 local function Misc(target)
     for i,enemy in pairs(GetEnemyHeroes()) do
-        if Ignite ~= nil then
-            if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetHP(enemy)+GetCurrentHP(enemy)*3 and ValidTarget(enemy, 600) then
-                CastTargetSpell(enemy, Ignite)
-            end
-         end
+		
+	    if Ignite and OriannaMenu.Misc.AutoIgnite:Value() then
+              if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetHP(enemy)+GetHPRegen(enemy)*3 and ValidTarget(enemy, 600) then
+              CastTargetSpell(enemy, Ignite)
+              end
+        end
      end
 end
 
 local function Kat_Tick(myHero)
-    if not myHero.dead then
         local target = GetCurrentTarget()
+
         Kat_Combo(target)
         Misc(target)
         Kat_Clear(minionManager.objects)
         for _, target in pairs(minionManager.objects) do Kat_LastHit(target) Kat_Clear(target) end
 	end
-end
+
  
 local function Kat_Draw()
     local pos = GetOrigin(myHero)
@@ -229,6 +222,18 @@ local function Kat_Draw()
     if KatarinaMenu.Drawings.W:Value() then DrawCircle(pos,150,1,25,GoS.Yellow) end
     if KatarinaMenu.Drawings.E:Value() then DrawCircle(pos,700,1,25,GoS.Blue) end
     if KatarinaMenu.Drawings.R:Value() then DrawCircle(pos,550,1,25,GoS.Green) end
+end
+
+local function Kat_ObJLoader(Object)
+    if GetObjectBaseName(Object) == "Katarina_Base_W_Indicator_Ally.troy" then
+        Dagger = Object
+     end
+end
+
+local function Kat_ObJ2(Object)
+    if GetObjectBaseName(Object) == "Katarina_Base_W_Indicator_Ally.troy" then
+        Dagger = Object
+     end
 end
 
 OnLoad(function()
@@ -241,6 +246,8 @@ OnLoad(function()
     OnSpellCast(Kat_OnSpellID)
     OnCreateObj(Kat_OnCreateObj)
     OnDeleteObj(Kat_OnDeleteObj)
+    OnCreateObj(Kat_ObJ2)
+    OnObjectLoad(Kat_ObJLoader)
 
     PrintChat(string.format("<font color='#1244EA'>Katarina:</font> <font color='#FFFFFF'> Good Game ! </font>")) 
     PrintChat("DevKat Scripts: " ..GetObjectBaseName(myHero)) 

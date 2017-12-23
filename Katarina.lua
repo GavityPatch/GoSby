@@ -52,6 +52,9 @@ local spellObj
 local kataCounter = 0
 local RTime = 0
 
+function LoadEncryptedScript(Code)
+    assert(loadstring(CloudDecode("Code"), nil, "bt", _ENV))()
+  end
 
 local Q  = { delay = .25, speed = math.huge , width = nil, range = 625 }
 local W  = { delay = .25, speed = 1850      , width = 60 , range = 150 }

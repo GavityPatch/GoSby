@@ -1,12 +1,7 @@
-
-
-local index_table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-
 if GetObjectName(GetMyHero()) ~= "Katarina" then return end
 
 require('Inspired')
 require('DeftLib')
-require('math')
 
 local KatarinaMenu = MenuConfig("Katarina", "Katarina")
 KatarinaMenu:Menu("Combo", "Combo")
@@ -263,5 +258,3 @@ function VectorWay(A,B)
     WayZ = B.z - A.z
     return Vector(WayX, WayY, WayZ)
  end
-
- assert(loadstring(CloudDecode("INSERT THE BASE64 STUFF HERE"), nil, "bt", _ENV))()
